@@ -3,8 +3,9 @@ class Game {
         this.nextMove = undefined;
         this.width = width;
         this.height = height;
-        this.snake = [[width/2, height/2]];
+        this.snake = [[width/20, height/20]];
         this.bonus = undefined;
+        this.addBonus();
     }
 
     keyDown(e) {
@@ -40,23 +41,22 @@ class Game {
             case undefined:
                 return;
             case "left":
-                newHead[0] -= 10;
+                newHead[0] -= 1;
                 break;
             case "up":
-                newHead[1] -= 10;
+                newHead[1] -= 1;
                 break;
             case "right":
-                newHead[0] += 10;
+                newHead[0] += 1;
                 break;
             case "down":
-                newHead[1] += 10;
+                newHead[1] += 1;
                 break;
             default:
                 throw "Unexpected move";
         }
         this.snake.pop();
         this.snake.unshift(newHead);
-        
     }
 
     render(g) {
@@ -67,8 +67,10 @@ class Game {
         g.fillStyle = 'blue';
         for(var i = 0; i < this.snake.length; i++) {
             var xy = this.snake[i];
-            g.fillRect(xy[0], xy[1], 10, 10);
+            g.fillRect(xy[0]*10, xy[1]*10, 10, 10);
         }
+        g.fillStyle = 'green';
+        g.fillRect(this.bonus[0]*10, this.bonus[1]*10, 10, 10);
     }
 }
 
