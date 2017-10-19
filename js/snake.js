@@ -49,7 +49,7 @@ class Game {
 		}
                 break;
             case " ":
-            
+
            this.nextMove = undefined;
            popup.style.visibility = "visible";
                 break;
@@ -71,8 +71,7 @@ class Game {
         var newHead = this.snake[0].slice();
         switch(this.nextMove) {
             case undefined:
-                newHead[0] = newHead[0];
-                newHead[1] = newHead[1];
+                return;
                 break;
             case "left":
                 newHead[0] -= 1;
