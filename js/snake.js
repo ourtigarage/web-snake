@@ -13,7 +13,7 @@ class Game {
         this.food = undefined;
         this.score = new Score();
         this.gameover = false
-        this.score = new Score();
+        this.scoreHtmlElmt = document.getElementById("score");
         this.addFood();
     }
 
@@ -110,8 +110,7 @@ class Game {
         //Check if next move is on some food
         if(newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
             console.log("Yum yum !!!");
-            this.score.increment();
-            console.log("score", this.score.getValue());
+            console.log("score", this.snake.length);
             //TODO: Move food to another place
             //This place must not be somewhere on the snake
             this.addFood();
@@ -127,8 +126,8 @@ class Game {
         // Clear the screen
         ctx.clearRect(0, 0, this.width, this.height);
 
-        // Update score
-        this.score.render();
+        // Update score HTML element
+        this.scoreHtmlElmt.textContent = this.snake.length - 1;
 
         // Draw the borders
         ctx.strokeStyle = 'black';
@@ -173,23 +172,4 @@ function start() {
 function loop(game, ctx) {
     game.update();
     game.render(ctx);
-}
-
-class Score {
-    constructor() {
-        this.htmlElement = document.getElementById("score");
-        this.value = 0;
-    }
-
-    render() {
-        this.htmlElement.textContent = this.value;
-    }
-
-    increment() {
-        this.value++;
-    }
-
-    getValue() {
-        return this.value;
-    }
 }
