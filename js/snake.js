@@ -14,7 +14,6 @@ class Game {
         this.score = new Score();
         this.gameover = false
         this.score = new Score();
-	this.gameover = false
         this.addFood();
     }
 
