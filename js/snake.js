@@ -1,15 +1,21 @@
+// Class representing the game
 class Game {
+    // Build a new game with the given pixel width and height
     constructor(width, height) {
+        // At the beginnig, no movement is set, the game is paused
         this.nextMove = undefined;
         this.width = width;
         this.height = height;
-        this.tileWidth = width/80;
+        this.tileWidth = width/60;
         this.tileHeight = height/60;
-        this.snake = [[width/(2*this.tileWidth), height/(2*this.tileHeight)]];
-        this.bonus = undefined;
-        this.addBonus();
+        // Initialize a 1 sized snake at the center of the game board
+        this.snake = [[Math.round(width/(2*this.tileWidth)), Math.round(height/(2*this.tileHeight))]];
+        this.food = undefined;
+        this.addFood();
     }
 
+    // Callback function called when a keyboard key
+    // is pushed down
     keyDown(e) {
         console.log(e);
         switch(e.key) {
@@ -31,12 +37,14 @@ class Game {
         }
     }
 
-    addBonus() {
-        var x = Math.round(Math.random() * (this.width/this.tileWidth));
-        var y = Math.round(Math.random() * (this.height/this.tileHeight));
-        this.bonus = [x, y];
+    // Add a food somewhere in the game (randomly)
+    addFood() {
+        var x = Math.round(Math.random() * 60);
+        var y = Math.round(Math.random() * 60);
+        this.food = [x, y];
     }
 
+    // Update the game state with the next move
     update() {
         var newHead = this.snake[0].slice();
         switch(this.nextMove) {
@@ -61,37 +69,52 @@ class Game {
         // 1) If snake is going out ouf the game
         // 2) If snake bites itself
 
-        //TODO: Check if next move is on food
-        //Do not pop the snake tail if it is
-        this.snake.pop();
+        //Check if next move is on some food
+        if(newHead[0] == this.food[0] && newHead[1] == this.food[1])
+            console.log("Yum yum !!!");
+            //TODO: Move food to another place
+            //This place must not be somewhere on the snake
+        else
+            this.snake.pop(); //Don't grow the snake
+        // Push the snake's new head position
         this.snake.unshift(newHead);
     }
 
-    render(g) {
-        g.clearRect(0, 0, this.width, this.height);
-        g.strokeStyle = 'black';
-        g.lineWidth = 20;
-        g.strokeRect(0, 0, this.width, this.height);
-        g.fillStyle = 'blue';
+    // Draw / render the current game state
+    render(ctx) {
+        // Clear the screen
+        ctx.clearRect(0, 0, this.width, this.height);
+
+        // Draw the borders
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(0, 0, this.width, this.height);
+
+        // Draw the snake
+        ctx.fillStyle = 'blue';
         for(var i = 0; i < this.snake.length; i++) {
             var xy = this.snake[i];
-            g.fillRect(xy[0]*this.tileWidth, xy[1]*this.tileHeight, this.tileWidth, this.tileHeight);
+            ctx.fillRect(xy[0]*this.tileWidth, xy[1]*this.tileHeight, this.tileWidth, this.tileHeight);
         }
-        g.fillStyle = 'green';
-        g.fillRect(this.bonus[0]*this.tileWidth, this.bonus[1]*this.tileHeight, this.tileWidth, this.tileHeight);
+
+        // Draw the food
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.food[0]*this.tileWidth, this.food[1]*this.tileHeight, this.tileWidth, this.tileHeight);
     }
 }
 
+// Initialize and start the game
 function start() {
-    game = new Game(800, 600);
     console.log("Starting the game");
     var canvas = document.getElementById("game");
+    game = new Game(canvas.width, canvas.height);
     document.onkeydown = function(e) {game.keyDown(e);};
-    var g = canvas.getContext("2d");
-    setInterval(loop, 50, game, g);
+    var ctx = canvas.getContext("2d");
+    setInterval(loop, 50, game, ctx);
 }
 
-function loop(game, g) {
+// The game update and rendering loop
+function loop(game, ctx) {
     game.update();
-    game.render(g);
+    game.render(ctx);
 }
