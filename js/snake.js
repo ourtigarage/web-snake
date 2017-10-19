@@ -12,6 +12,7 @@ class Game {
         this.snake = [[Math.round(width/(2*this.tileWidth)), Math.round(height/(2*this.tileHeight))]];
         this.food = undefined;
         this.score = new Score();
+        this.gameover = false
         this.addFood();
     }
 
@@ -83,13 +84,17 @@ class Game {
         //TODO: Check next move is not a game over
         // 1) If snake is going out ouf the game
         if(newHead[0] < 0) {
+            this.gameover = true;
             newHead[0] = 0;
         } else if(newHead[0] >= Math.round(this.width/(this.tileWidth))) {
+	    this.gameover = true;
             newHead[0] = Math.round(this.width/(this.tileWidth))-1;
         }
         if(newHead[1] < 0) {
+	    this.gameover = true;
             newHead[1] = 0;
         } else if(newHead[1] >= Math.round(this.height/(this.tileHeight))) {
+	    this.gameover = true;
             newHead[1] = Math.round(this.height/(this.tileHeight))-1;
         }
         // 2) If snake bites itself
@@ -134,6 +139,15 @@ class Game {
 		food.src = "js/Phone.jpg";
 		//TO DO : Randomize placement
 		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight);
+	//GameOver
+	      if (this.gameover) {
+              ctx.font = '48px serif';
+              ctx.fillStyle = 'black';
+              var displayGameOver = "GAME OVER";
+              var text = ctx.measureText(displayGameOver);
+              console.log(text.width);
+              ctx.fillText(displayGameOver, (this.width-text.width)/2, this.height / 2);
+          }
     }
 }
 
