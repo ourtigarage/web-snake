@@ -39,6 +39,9 @@ class Game {
 		   this.nextMove = "down";
 		}
                 break;
+            case " ":
+           this.nextMove = undefined;
+                break;
             default:
                 // Do nothing just ignore it
                 break;
@@ -57,7 +60,9 @@ class Game {
         var newHead = this.snake[0].slice();
         switch(this.nextMove) {
             case undefined:
-                return;
+                newHead[0] = newHead[0];
+                newHead[1] = newHead[1];
+                break;
             case "left":
                 newHead[0] -= 1;
                 break;
