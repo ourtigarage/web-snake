@@ -11,7 +11,8 @@ class Game {
         // Initialize a 1 sized snake at the center of the game board
         this.snake = [[Math.round(width/(2*this.tileWidth)), Math.round(height/(2*this.tileHeight))]];
         this.food = undefined;
-	this.gameover = false
+        this.gameover = false
+        this.scoreHtmlElmt = document.getElementById("score");
         this.addFood();
     }
 
@@ -108,6 +109,7 @@ class Game {
         //Check if next move is on some food
         if(newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
             console.log("Yum yum !!!");
+            console.log("score", this.snake.length);
             //TODO: Move food to another place
             //This place must not be somewhere on the snake
             this.addFood();
@@ -122,6 +124,9 @@ class Game {
     render(ctx) {
         // Clear the screen
         ctx.clearRect(0, 0, this.width, this.height);
+
+        // Update score HTML element
+        this.scoreHtmlElmt.textContent = this.snake.length - 1;
 
         // Draw the borders
         ctx.strokeStyle = 'black';
@@ -139,8 +144,9 @@ class Game {
 		var food = new Image();
 		food.src = "js/Phone.jpg";
 		//TO DO : Randomize placement
-		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight);
-	//GameOver 
+		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight)
+
+	      //GameOver
 	      if (this.gameover) {
               ctx.font = '48px serif';
               ctx.fillStyle = 'black';
