@@ -67,6 +67,16 @@ class Game {
         }
         //TODO: Check next move is not a game over
         // 1) If snake is going out ouf the game
+        if(newHead[0] < 0) {
+            newHead[0] = 0;
+        } else if(newHead[0] >= Math.round(this.width/(this.tileWidth))) {
+            newHead[0] = Math.round(this.width/(this.tileWidth))-1;
+        }
+        if(newHead[1] < 0) {
+            newHead[1] = 0;
+        } else if(newHead[1] >= Math.round(this.height/(this.tileHeight))) {
+            newHead[1] = Math.round(this.height/(this.tileHeight))-1;
+        }
         // 2) If snake bites itself
 
         //Check if next move is on some food
