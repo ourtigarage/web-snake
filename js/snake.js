@@ -63,7 +63,23 @@ class Game {
     addFood() {
         var x = Math.round(Math.random() * 60);
         var y = Math.round(Math.random() * 60);
-        this.food = [x, y];
+        
+        var ok = true;
+        
+        for(var i = 0; i < this.snake.length; i++) {
+            var xy = this.snake[i];
+            
+            if(xy[0] == x && xy[1] == y){
+                ok = false;
+                break;
+            }
+        }
+        
+        if(ok){
+            this.food = [x, y];
+        } else {
+            addFood();
+        }
     }
 
     // Update the game state with the next move
