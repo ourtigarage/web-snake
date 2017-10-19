@@ -88,12 +88,14 @@ class Game {
         // 2) If snake bites itself
 
         //Check if next move is on some food
-        if(newHead[0] == this.food[0] && newHead[1] == this.food[1])
+        if(newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
             console.log("Yum yum !!!");
             //TODO: Move food to another place
             //This place must not be somewhere on the snake
-        else
+            this.addFood();
+        } else {
             this.snake.pop(); //Don't grow the snake
+        }
         // Push the snake's new head position
         this.snake.unshift(newHead);
     }
@@ -119,7 +121,7 @@ class Game {
 		var food = new Image();
 		food.src = "js/Phone.jpg";
 		//TO DO : Randomize placement
-		ctx.drawImage(food, 254, 321);
+		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight);
     }
 }
 
