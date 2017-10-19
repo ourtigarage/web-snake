@@ -41,6 +41,7 @@ class Game {
                 break;
             case " ":
            this.nextMove = undefined;
+           alert("Game is in pause - Press OK to remove the alert and press an arrow to restart the game");
                 break;
             default:
                 // Do nothing just ignore it
