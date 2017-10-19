@@ -116,8 +116,10 @@ class Game {
         }
 
         // Draw the food
-        ctx.fillStyle = 'green';
-        ctx.fillRect(this.food[0]*this.tileWidth, this.food[1]*this.tileHeight, this.tileWidth, this.tileHeight);
+		var food = new Image();
+		food.src = "js/Phone.jpg";
+		//TO DO : Randomize placement
+		ctx.drawImage(food, 254, 321);
     }
 }
 
