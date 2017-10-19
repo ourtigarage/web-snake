@@ -17,31 +17,39 @@ class Game {
     // Callback function called when a keyboard key
     // is pushed down
     keyDown(e) {
+        //Get the pause popup div
+        var popup = document.getElementById("pausePopup");
+
         console.log(e);
         switch(e.key) {
             case "ArrowLeft":
 		if (this.nextMove != "right") {
 		   this.nextMove = "left";
+           popup.style.visibility = "hidden";
 		}
                 break;
             case "ArrowUp":
 		if (this.nextMove != "down") {
 		   this.nextMove = "up";
+           popup.style.visibility = "hidden";
 		}
                 break;
             case "ArrowRight":
 		if (this.nextMove != "left") {
 		   this.nextMove = "right";
+           popup.style.visibility = "hidden";
 		}
                 break;
             case "ArrowDown":
 		if (this.nextMove != "up") {
 		   this.nextMove = "down";
+           popup.style.visibility = "hidden";
 		}
                 break;
             case " ":
+            
            this.nextMove = undefined;
-           alert("Game is in pause - Press OK to remove the alert and press an arrow to restart the game");
+           popup.style.visibility = "visible";
                 break;
             default:
                 // Do nothing just ignore it
