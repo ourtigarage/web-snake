@@ -20,24 +20,24 @@ class Game {
         console.log(e);
         switch(e.key) {
             case "ArrowLeft":
-				if (this.nextMove != "right") {
-					this.nextMove = "left";
-				}
+		if (this.nextMove != "right") {
+		   this.nextMove = "left";
+		}
                 break;
             case "ArrowUp":
-				if (this.nextMove != "down") {
-					this.nextMove = "up";
-				}
+		if (this.nextMove != "down") {
+		   this.nextMove = "up";
+		}
                 break;
             case "ArrowRight":
-				if (this.nextMove != "left") {
-					this.nextMove = "right";
-				}
+		if (this.nextMove != "left") {
+		   this.nextMove = "right";
+		}
                 break;
             case "ArrowDown":
-				if (this.nextMove != "up") {
-					this.nextMove = "down";
-				}
+		if (this.nextMove != "up") {
+		   this.nextMove = "down";
+		}
                 break;
             default:
                 // Do nothing just ignore it
