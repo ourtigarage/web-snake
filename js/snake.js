@@ -130,7 +130,7 @@ function start() {
     game = new Game(canvas.width, canvas.height);
     document.onkeydown = function(e) {game.keyDown(e);};
     var ctx = canvas.getContext("2d");
-    setInterval(loop, 25, game, ctx);
+    setInterval(loop, 75, game, ctx);
 }
 
 // The game update and rendering loop
