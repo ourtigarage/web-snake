@@ -3,7 +3,9 @@ class Game {
         this.nextMove = undefined;
         this.width = width;
         this.height = height;
-        this.snake = [[width/20, height/20]];
+        this.tileWidth = width/80;
+        this.tileHeight = height/60;
+        this.snake = [[width/(2*this.tileWidth), height/(2*this.tileHeight)]];
         this.bonus = undefined;
         this.addBonus();
     }
@@ -30,8 +32,8 @@ class Game {
     }
 
     addBonus() {
-        var x = Math.round(Math.random() * (this.width/10));
-        var y = Math.round(Math.random() * (this.height/10));
+        var x = Math.round(Math.random() * (this.width/this.tileWidth));
+        var y = Math.round(Math.random() * (this.height/this.tileHeight));
         this.bonus = [x, y];
     }
 
@@ -55,6 +57,12 @@ class Game {
             default:
                 throw "Unexpected move";
         }
+        //TODO: Check next move is not a game over
+        // 1) If snake is going out ouf the game
+        // 2) If snake bites itself
+
+        //TODO: Check if next move is on food
+        //Do not pop the snake tail if it is
         this.snake.pop();
         this.snake.unshift(newHead);
     }
@@ -62,15 +70,15 @@ class Game {
     render(g) {
         g.clearRect(0, 0, this.width, this.height);
         g.strokeStyle = 'black';
-        g.lineWidth = 15;
+        g.lineWidth = 20;
         g.strokeRect(0, 0, this.width, this.height);
         g.fillStyle = 'blue';
         for(var i = 0; i < this.snake.length; i++) {
             var xy = this.snake[i];
-            g.fillRect(xy[0]*10, xy[1]*10, 10, 10);
+            g.fillRect(xy[0]*this.tileWidth, xy[1]*this.tileHeight, this.tileWidth, this.tileHeight);
         }
         g.fillStyle = 'green';
-        g.fillRect(this.bonus[0]*10, this.bonus[1]*10, 10, 10);
+        g.fillRect(this.bonus[0]*this.tileWidth, this.bonus[1]*this.tileHeight, this.tileWidth, this.tileHeight);
     }
 }
 
