@@ -11,7 +11,6 @@ class Game {
         // Initialize a 1 sized snake at the center of the game board
         this.snake = [[Math.round(width/(2*this.tileWidth)), Math.round(height/(2*this.tileHeight))]];
         this.food = undefined;
-        this.score = new Score();
         this.gameover = false
         this.scoreHtmlElmt = document.getElementById("score");
         this.addFood();
@@ -145,8 +144,9 @@ class Game {
 		var food = new Image();
 		food.src = "js/Phone.jpg";
 		//TO DO : Randomize placement
-		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight);
-	//GameOver
+		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight)
+
+	      //GameOver
 	      if (this.gameover) {
               ctx.font = '48px serif';
               ctx.fillStyle = 'black';
