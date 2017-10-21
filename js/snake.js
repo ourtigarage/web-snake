@@ -25,28 +25,28 @@ class Game {
         console.log(e);
         switch(e.key) {
             case "ArrowLeft":
-		if (this.nextMove != "right") {
-		   this.nextMove = "left";
+        if (this.nextMove != "right") {
+           this.nextMove = "left";
            popup.style.visibility = "hidden";
-		}
+        }
                 break;
             case "ArrowUp":
-		if (this.nextMove != "down") {
-		   this.nextMove = "up";
+        if (this.nextMove != "down") {
+           this.nextMove = "up";
            popup.style.visibility = "hidden";
-		}
+        }
                 break;
             case "ArrowRight":
-		if (this.nextMove != "left") {
-		   this.nextMove = "right";
+        if (this.nextMove != "left") {
+           this.nextMove = "right";
            popup.style.visibility = "hidden";
-		}
+        }
                 break;
             case "ArrowDown":
-		if (this.nextMove != "up") {
-		   this.nextMove = "down";
+        if (this.nextMove != "up") {
+           this.nextMove = "down";
            popup.style.visibility = "hidden";
-		}
+        }
                 break;
             case " ":
 
@@ -72,7 +72,7 @@ class Game {
             }
         }
         
-	this.food = [x, y];
+    this.food = [x, y];
     }
 
     // Update the game state with the next move
@@ -103,14 +103,14 @@ class Game {
             this.gameover = true;
             newHead[0] = 0;
         } else if(newHead[0] >= Math.round(this.width/(this.tileWidth))) {
-	    this.gameover = true;
+            this.gameover = true;
             newHead[0] = Math.round(this.width/(this.tileWidth))-1;
         }
         if(newHead[1] < 0) {
-	    this.gameover = true;
+            this.gameover = true;
             newHead[1] = 0;
         } else if(newHead[1] >= Math.round(this.height/(this.tileHeight))) {
-	    this.gameover = true;
+            this.gameover = true;
             newHead[1] = Math.round(this.height/(this.tileHeight))-1;
         }
         // 2) If snake bites itself
@@ -131,6 +131,20 @@ class Game {
 
     // Draw / render the current game state
     render(ctx) {
+        //GameOver
+        if (this.gameover) {
+            ctx.clearRect(0, 0, this.width, this.height);
+            document.querySelector('#restart').classList.remove('hide');
+            var audio = new AudioPlay;
+            audio.pause();
+            ctx.font = '48px serif';
+            ctx.fillStyle = 'black';
+            var displayGameOver = "GAME OVER";
+            var text = ctx.measureText(displayGameOver);
+            console.log(text.width);
+            ctx.fillText(displayGameOver, (this.width-text.width)/2, this.height / 2);
+            return;
+        }
         // Clear the screen
         ctx.clearRect(0, 0, this.width, this.height);
 
@@ -150,25 +164,33 @@ class Game {
         }
 
         // Draw the food
-		var food = new Image();
-		food.src = "js/Phone.jpg";
-		//TO DO : Randomize placement
-		ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight)
+        var food = new Image();
+        food.src = "js/Phone.jpg";
+        //TO DO : Randomize placement
+        ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight)
+    }
 
-	      //GameOver
-	      if (this.gameover) {
-              ctx.font = '48px serif';
-              ctx.fillStyle = 'black';
-              var displayGameOver = "GAME OVER";
-              var text = ctx.measureText(displayGameOver);
-              console.log(text.width);
-              ctx.fillText(displayGameOver, (this.width-text.width)/2, this.height / 2);
-          }
+    restart() {
+
     }
 }
+class AudioPlay {
+    constructor(props) {
+        this.audio = document.getElementById("myAudio"); 
+    }
 
+    play() { 
+        this.audio.play(); 
+    } 
+
+    pause() { 
+        this.audio.pause(); 
+    }
+}
 // Initialize and start the game
 function start() {
+    var audio = new AudioPlay;
+    audio.play();
     console.log("Starting the game");
     var canvas = document.getElementById("game");
     game = new Game(canvas.width, canvas.height);
@@ -181,4 +203,8 @@ function start() {
 function loop(game, ctx) {
     game.update();
     game.render(ctx);
+}
+
+function restart() {
+    location.reload();
 }
