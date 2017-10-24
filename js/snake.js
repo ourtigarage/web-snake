@@ -7,10 +7,10 @@ class Game {
         this.alreadyMoved = false;
         this.width = width;
         this.height = height;
-        this.tileWidth = width/60;
-        this.tileHeight = height/60;
+        this.tileWidth = width / 60;
+        this.tileHeight = height / 60;
         // Initialize a 1 sized snake at the center of the game board
-        this.snake = [[Math.round(width/(2*this.tileWidth)), Math.round(height/(2*this.tileHeight))]];
+        this.snake = [[Math.round(width / (2 * this.tileWidth)), Math.round(height / (2 * this.tileHeight))]];
         this.food = undefined;
         this.gameover = false
         this.scoreHtmlElmt = document.getElementById("score");
@@ -24,40 +24,40 @@ class Game {
         var popup = document.getElementById("pausePopup");
 
         console.log(e);
-        switch(e.key) {
+        switch (e.key) {
             case "ArrowLeft":
-        if (this.nextMove != "right" && !this.alreadyMoved) {
-           this.nextMove = "left";
-           this.alreadyMoved = true;
-           popup.style.visibility = "hidden";
-        }
+                if (this.nextMove != "right" && !this.alreadyMoved) {
+                    this.nextMove = "left";
+                    this.alreadyMoved = true;
+                    popup.style.visibility = "hidden";
+                }
                 break;
             case "ArrowUp":
-        if (this.nextMove != "down" && !this.alreadyMoved) {
-           this.nextMove = "up";
-           this.alreadyMoved = true;
-           popup.style.visibility = "hidden";
-        }
+                if (this.nextMove != "down" && !this.alreadyMoved) {
+                    this.nextMove = "up";
+                    this.alreadyMoved = true;
+                    popup.style.visibility = "hidden";
+                }
                 break;
             case "ArrowRight":
-        if (this.nextMove != "left" && !this.alreadyMoved) {
-           this.nextMove = "right";
-           this.alreadyMoved = true;
-           popup.style.visibility = "hidden";
-        }
+                if (this.nextMove != "left" && !this.alreadyMoved) {
+                    this.nextMove = "right";
+                    this.alreadyMoved = true;
+                    popup.style.visibility = "hidden";
+                }
                 break;
             case "ArrowDown":
-        if (this.nextMove != "up" && !this.alreadyMoved) {
-           this.nextMove = "down";
-           this.alreadyMoved = true;
-           popup.style.visibility = "hidden";
-        }
+                if (this.nextMove != "up" && !this.alreadyMoved) {
+                    this.nextMove = "down";
+                    this.alreadyMoved = true;
+                    popup.style.visibility = "hidden";
+                }
                 break;
             case " ":
 
-           this.nextMove = undefined;
-           this.alreadyMoved = false;
-           popup.style.visibility = "visible";
+                this.nextMove = undefined;
+                this.alreadyMoved = false;
+                popup.style.visibility = "visible";
                 break;
             default:
                 // Do nothing just ignore it
@@ -69,25 +69,25 @@ class Game {
     addFood() {
         var x = Math.floor(Math.random() * 60);
         var y = Math.floor(Math.random() * 60);
-        
-        for(var i = 0; i < this.snake.length; i++) {
+
+        for (var i = 0; i < this.snake.length; i++) {
             var xy = this.snake[i];
-            
-            if(xy[0] == x && xy[1] == y) {
+
+            if (xy[0] == x && xy[1] == y) {
                 return this.addFood();
             }
         }
-        
-    this.food = [x, y];
+
+        this.food = [x, y];
     }
 
     // Update the game state with the next move
     update() {
-        if(this.gameover)
+        if (this.gameover)
             return;
         this.alreadyMoved = false;
         var newHead = this.snake[0].slice();
-        switch(this.nextMove) {
+        switch (this.nextMove) {
             case undefined:
                 return;
                 break;
@@ -108,26 +108,26 @@ class Game {
         }
 
         // Game Over If snake is going out ouf the game
-        if(newHead[0] < 0) {
+        if (newHead[0] < 0) {
             this.gameover = true;
             newHead[0] = 0;
-        } else if(newHead[0] >= Math.round(this.width/(this.tileWidth))) {
+        } else if (newHead[0] >= Math.round(this.width / (this.tileWidth))) {
             this.gameover = true;
-            newHead[0] = Math.round(this.width/(this.tileWidth))-1;
+            newHead[0] = Math.round(this.width / (this.tileWidth)) - 1;
         }
-        if(newHead[1] < 0) {
+        if (newHead[1] < 0) {
             this.gameover = true;
             newHead[1] = 0;
-        } else if(newHead[1] >= Math.round(this.height/(this.tileHeight))) {
+        } else if (newHead[1] >= Math.round(this.height / (this.tileHeight))) {
             this.gameover = true;
-            newHead[1] = Math.round(this.height/(this.tileHeight))-1;
+            newHead[1] = Math.round(this.height / (this.tileHeight)) - 1;
         }
 
-        if(this.gameover)
+        if (this.gameover)
             return;
 
         //Check if next move is on some food
-        if(newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
+        if (newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
             console.log("Yum yum !!!");
             console.log("score", this.snake.length);
             // Move food to another place
@@ -140,8 +140,8 @@ class Game {
         this.snake.unshift(newHead);
 
         // Game Over If snake bites itself
-        for(var i = 1; i < this.snake.length; i++) {
-            if(newHead[0] == this.snake[i][0] && newHead[1] == this.snake[i][1]) {
+        for (var i = 1; i < this.snake.length; i++) {
+            if (newHead[0] == this.snake[i][0] && newHead[1] == this.snake[i][1]) {
                 this.gameover = true;
                 return;
             }
@@ -163,16 +163,16 @@ class Game {
 
         // Draw the snake
         ctx.fillStyle = 'blue';
-        for(var i = 0; i < this.snake.length; i++) {
+        for (var i = 0; i < this.snake.length; i++) {
             var xy = this.snake[i];
-            ctx.fillRect(xy[0]*this.tileWidth, xy[1]*this.tileHeight, this.tileWidth, this.tileHeight);
+            ctx.fillRect(xy[0] * this.tileWidth, xy[1] * this.tileHeight, this.tileWidth, this.tileHeight);
         }
 
         // Draw the food
         var food = new Image();
         food.src = "js/Phone.jpg";
         //TO DO : Randomize placement
-        ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight)
+        ctx.drawImage(food, this.food[0] * this.tileWidth, this.food[1] * this.tileHeight)
         //GameOver
         if (this.gameover) {
             document.querySelector('#restart').classList.remove('hide');
@@ -183,7 +183,7 @@ class Game {
             var displayGameOver = "GAME OVER";
             var text = ctx.measureText(displayGameOver);
             console.log(text.width);
-            ctx.fillText(displayGameOver, (this.width-text.width)/2, this.height / 2);
+            ctx.fillText(displayGameOver, (this.width - text.width) / 2, this.height / 2);
             // return;
         }
     }
@@ -194,15 +194,15 @@ class Game {
 }
 class AudioPlay {
     constructor(props) {
-        this.audio = document.getElementById("myAudio"); 
+        this.audio = document.getElementById("myAudio");
     }
 
-    play() { 
-        this.audio.play(); 
-    } 
+    play() {
+        this.audio.play();
+    }
 
-    pause() { 
-        this.audio.pause(); 
+    pause() {
+        this.audio.pause();
     }
 }
 // Initialize and start the game
@@ -212,7 +212,7 @@ function start() {
     console.log("Starting the game");
     var canvas = document.getElementById("game");
     game = new Game(canvas.width, canvas.height);
-    document.onkeydown = function(e) {game.keyDown(e);};
+    document.onkeydown = function (e) { game.keyDown(e); };
     var ctx = canvas.getContext("2d");
     setInterval(loop, 75, game, ctx);
 }
