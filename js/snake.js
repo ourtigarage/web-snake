@@ -1,3 +1,6 @@
+// Global variables
+var timer;
+
 // Class representing the game
 class Game {
     // Build a new game with the given pixel width and height
@@ -171,8 +174,8 @@ class Game {
         // Draw the food
         var food = new Image();
         food.src = "js/Phone.jpg";
-        
-        ctx.drawImage(food, this.food[0] * this.tileWidth - food.width/4, this.food[1] * this.tileHeight - food.height/4);
+        //TO DO : Randomize placement
+        ctx.drawImage(food, this.food[0] * this.tileWidth, this.food[1] * this.tileHeight)
         //GameOver
         if (this.gameover) {
             document.querySelector('#restart').classList.remove('hide');
@@ -188,7 +191,7 @@ class Game {
         }
     }
 
-    restart() {
+   restart() {
 
     }
 }
@@ -214,13 +217,31 @@ function start() {
     game = new Game(canvas.width, canvas.height);
     document.onkeydown = function (e) { game.keyDown(e); };
     var ctx = canvas.getContext("2d");
-    setInterval(loop, 75, game, ctx);
+    loop(game, ctx);
 }
 
 // The game update and rendering loop
 function loop(game, ctx) {
     game.update();
     game.render(ctx);
+	clearInterval(timer);
+	// every 5 food eaten, increase spead by 10 ms
+	var snakeFastIndex = Math.floor(game.snake.length / 5);
+	console.log("snakeFastIndex = "+snakeFastIndex);
+	if(snakeFastIndex == 0){
+		var speed = 80;
+	}
+	else{
+		// if speed should be faster to 30 ms, keep it to 30 ms, so the player can still play
+		if(snakeFastIndex>5){
+			var speed = 30;
+		}
+		else{
+			var speed = 80 - (10*snakeFastIndex);
+		}
+	}
+	console.log("snake speed = "+speed);
+	timer = setInterval(loop, speed, game, ctx);
 }
 
 function restart() {
