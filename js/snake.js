@@ -4,6 +4,7 @@ class Game {
     constructor(width, height) {
         // At the beginnig, no movement is set, the game is paused
         this.nextMove = undefined;
+        this.alreadyMoved = false;
         this.width = width;
         this.height = height;
         this.tileWidth = width/60;
@@ -25,32 +26,37 @@ class Game {
         console.log(e);
         switch(e.key) {
             case "ArrowLeft":
-        if (this.nextMove != "right") {
+        if (this.nextMove != "right" && !this.alreadyMoved) {
            this.nextMove = "left";
+           this.alreadyMoved = true;
            popup.style.visibility = "hidden";
         }
                 break;
             case "ArrowUp":
-        if (this.nextMove != "down") {
+        if (this.nextMove != "down" && !this.alreadyMoved) {
            this.nextMove = "up";
+           this.alreadyMoved = true;
            popup.style.visibility = "hidden";
         }
                 break;
             case "ArrowRight":
-        if (this.nextMove != "left") {
+        if (this.nextMove != "left" && !this.alreadyMoved) {
            this.nextMove = "right";
+           this.alreadyMoved = true;
            popup.style.visibility = "hidden";
         }
                 break;
             case "ArrowDown":
-        if (this.nextMove != "up") {
+        if (this.nextMove != "up" && !this.alreadyMoved) {
            this.nextMove = "down";
+           this.alreadyMoved = true;
            popup.style.visibility = "hidden";
         }
                 break;
             case " ":
 
            this.nextMove = undefined;
+           this.alreadyMoved = false;
            popup.style.visibility = "visible";
                 break;
             default:
@@ -61,8 +67,8 @@ class Game {
 
     // Add a food somewhere in the game (randomly)
     addFood() {
-        var x = Math.round(Math.random() * 60);
-        var y = Math.round(Math.random() * 60);
+        var x = Math.floor(Math.random() * 60);
+        var y = Math.floor(Math.random() * 60);
         
         for(var i = 0; i < this.snake.length; i++) {
             var xy = this.snake[i];
@@ -77,6 +83,9 @@ class Game {
 
     // Update the game state with the next move
     update() {
+        if(this.gameover)
+            return;
+        this.alreadyMoved = false;
         var newHead = this.snake[0].slice();
         switch(this.nextMove) {
             case undefined:
@@ -97,8 +106,8 @@ class Game {
             default:
                 throw "Unexpected move";
         }
-        //TODO: Check next move is not a game over
-        // 1) If snake is going out ouf the game
+
+        // Game Over If snake is going out ouf the game
         if(newHead[0] < 0) {
             this.gameover = true;
             newHead[0] = 0;
@@ -113,13 +122,15 @@ class Game {
             this.gameover = true;
             newHead[1] = Math.round(this.height/(this.tileHeight))-1;
         }
-        // 2) If snake bites itself
+
+        if(this.gameover)
+            return;
 
         //Check if next move is on some food
         if(newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
             console.log("Yum yum !!!");
             console.log("score", this.snake.length);
-            //TODO: Move food to another place
+            // Move food to another place
             //This place must not be somewhere on the snake
             this.addFood();
         } else {
@@ -127,24 +138,18 @@ class Game {
         }
         // Push the snake's new head position
         this.snake.unshift(newHead);
+
+        // Game Over If snake bites itself
+        for(var i = 1; i < this.snake.length; i++) {
+            if(newHead[0] == this.snake[i][0] && newHead[1] == this.snake[i][1]) {
+                this.gameover = true;
+                return;
+            }
+        }
     }
 
     // Draw / render the current game state
     render(ctx) {
-        //GameOver
-        if (this.gameover) {
-            ctx.clearRect(0, 0, this.width, this.height);
-            document.querySelector('#restart').classList.remove('hide');
-            var audio = new AudioPlay;
-            audio.pause();
-            ctx.font = '48px serif';
-            ctx.fillStyle = 'black';
-            var displayGameOver = "GAME OVER";
-            var text = ctx.measureText(displayGameOver);
-            console.log(text.width);
-            ctx.fillText(displayGameOver, (this.width-text.width)/2, this.height / 2);
-            return;
-        }
         // Clear the screen
         ctx.clearRect(0, 0, this.width, this.height);
 
@@ -168,6 +173,19 @@ class Game {
         food.src = "js/Phone.jpg";
         //TO DO : Randomize placement
         ctx.drawImage(food, this.food[0]*this.tileWidth, this.food[1]*this.tileHeight)
+        //GameOver
+        if (this.gameover) {
+            document.querySelector('#restart').classList.remove('hide');
+            var audio = new AudioPlay;
+            audio.pause();
+            ctx.font = '48px serif';
+            ctx.fillStyle = 'black';
+            var displayGameOver = "GAME OVER";
+            var text = ctx.measureText(displayGameOver);
+            console.log(text.width);
+            ctx.fillText(displayGameOver, (this.width-text.width)/2, this.height / 2);
+            // return;
+        }
     }
 
     restart() {
