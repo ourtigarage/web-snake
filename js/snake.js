@@ -171,7 +171,7 @@ class Game {
         // Draw the food
         var food = new Image();
         food.src = "js/Phone.jpg";
-        ctx.drawImage(food, this.food[0] * this.tileWidth - food.width/4, this.food[1] * this.tileHeight - food.height/4);
+        ctx.drawImage(food, this.food[0] * this.tileWidth, this.food[1] * this.tileHeight - food.height/4);
         //GameOver
         if (this.gameover) {
             document.querySelector('#restart').classList.remove('hide');
