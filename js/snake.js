@@ -1,6 +1,3 @@
-// Global variables
-var timer;
-
 // Class representing the game
 class Game {
     // Build a new game with the given pixel width and height
@@ -223,7 +220,6 @@ function start() {
 function loop(game, ctx) {
     game.update();
     game.render(ctx);
-	clearInterval(timer);
 	// every 5 food eaten, increase spead by 10 ms
 	var snakeFastIndex = Math.floor(game.snake.length / 5);
 	console.log("snakeFastIndex = "+snakeFastIndex);
@@ -240,7 +236,7 @@ function loop(game, ctx) {
 		}
 	}
 	console.log("snake speed = "+speed);
-	timer = setInterval(loop, speed, game, ctx);
+	setTimeout(function(){ loop(game,ctx); }, speed);
 }
 
 function restart() {
