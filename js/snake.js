@@ -208,6 +208,9 @@ class Game {
             console.log(text.width);
             ctx.fillText(displayGameOver, (this.width - text.width) / 2, this.height / 2);
             // return;
+
+            // Quick restart on key down
+            document.onkeydown = function () { restart() };
         }
     }
 
