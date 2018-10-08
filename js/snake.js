@@ -47,41 +47,35 @@ class Game {
         //Get the pause popup div
         var popup = document.getElementById("pausePopup");
 
-        console.log(e);
         switch (e.key) {
             case "ArrowLeft":
                 if (this.nextMove != "right" && !this.alreadyMoved) {
                     this.nextMove = "left";
                     this.alreadyMoved = true;
-                    popup.style.visibility = "hidden";
                 }
                 break;
             case "ArrowUp":
                 if (this.nextMove != "down" && !this.alreadyMoved) {
                     this.nextMove = "up";
                     this.alreadyMoved = true;
-                    popup.style.visibility = "hidden";
                 }
                 break;
             case "ArrowRight":
                 if (this.nextMove != "left" && !this.alreadyMoved) {
                     this.nextMove = "right";
                     this.alreadyMoved = true;
-                    popup.style.visibility = "hidden";
                 }
                 break;
             case "ArrowDown":
                 if (this.nextMove != "up" && !this.alreadyMoved) {
                     this.nextMove = "down";
                     this.alreadyMoved = true;
-                    popup.style.visibility = "hidden";
                 }
                 break;
             case " ":
 
                 this.nextMove = undefined;
                 this.alreadyMoved = false;
-                popup.style.visibility = "visible";
                 break;
             default:
                 // Do nothing just ignore it
@@ -152,8 +146,6 @@ class Game {
 
         //Check if next move is on some food
         if (newHead[0] == this.food[0] && newHead[1] == this.food[1]) {
-            console.log("Yum yum !!!");
-            console.log("score", this.snake.length);
             // Move food to another place
             //This place must not be somewhere on the snake
             this.addFood();
@@ -205,7 +197,6 @@ class Game {
             ctx.fillStyle = 'black';
             var displayGameOver = "GAME OVER";
             var text = ctx.measureText(displayGameOver);
-            console.log(text.width);
             ctx.fillText(displayGameOver, (this.width - text.width) / 2, this.height / 2);
             // return;
 
@@ -235,7 +226,6 @@ class AudioPlay {
 function start() {
     var audio = new AudioPlay;
     audio.play();
-    console.log("Starting the game");
     var canvas = document.getElementById("game");
     game = new Game(canvas.width, canvas.height);
     document.onkeydown = function (e) { game.keyDown(e); };
@@ -249,7 +239,6 @@ function loop(game, ctx) {
     game.render(ctx);
     // every 5 food eaten, increase spead by 10 ms
     var snakeFastIndex = Math.floor(game.snake.length / 5);
-    console.log("snakeFastIndex = " + snakeFastIndex);
     if (snakeFastIndex == 0) {
         var speed = 80;
     }
@@ -262,7 +251,6 @@ function loop(game, ctx) {
             var speed = 80 - (10 * snakeFastIndex);
         }
     }
-    console.log("snake speed = " + speed);
     setTimeout(function () { loop(game, ctx); }, speed);
 }
 
